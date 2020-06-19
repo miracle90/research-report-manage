@@ -8,6 +8,7 @@
 2. 创建一个新项目（vue create hello-world）
 3. git init
 4. git remote add origin XXXXXX
+5. 解决报错 fatal: refusing to merge unrelated histories（git pull origin master --allow-unrelated-histories）
 
 ### 其他
 
