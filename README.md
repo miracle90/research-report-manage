@@ -8,3 +8,9 @@
 2. 创建一个新项目（vue create hello-world）
 3. git init
 4. git remote add origin XXXXXX
+
+### 其他
+
+* ssh公钥目录 ~/.ssh/id_rsa.pub
+* open . 终端打开当前目录finder
+* mac显示隐藏文件 Command + Shift + .
