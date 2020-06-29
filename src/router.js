@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Index from './views/Index.vue'
 import Welcome from './views/Welcome.vue'
+import User from './views/User.vue'
+import Article from './views/Article.vue'
 
 Vue.use(Router)
 
@@ -21,6 +23,16 @@ export default new Router({
           path: '',
           name: 'welcome',
           component: Welcome
+        },
+        {
+          path: 'user',
+          name: 'user',
+          component: User
+        },
+        {
+          path: 'article',
+          name: 'article',
+          component: Article
         }
       ]
     }

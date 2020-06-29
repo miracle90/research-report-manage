@@ -1,9 +1,16 @@
 import axios from 'axios'
 
-const baseUrl = 'http://120.79.179.182:8083'
+// const baseUrl = 'http://120.79.179.182:8083'
+const baseUrl = 'http://tigjw5.natappfree.cc'
 
-// 登录接口
-export function loginApi (data) {
-  const url = baseUrl + '/user/login2manager'
+// 用户列表
+export function userList (data) {
+  const url = baseUrl + '/main/user/list'
+  return axios.post(url, data)
+}
+
+// 文章管理
+export function reportList (data) {
+  const url = baseUrl + '/main/report/list'
   return axios.post(url, data)
 }

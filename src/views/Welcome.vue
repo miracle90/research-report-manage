@@ -13,7 +13,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .welcome
     margin-left 20px
     padding-top 240px

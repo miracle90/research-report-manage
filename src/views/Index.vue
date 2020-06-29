@@ -8,23 +8,23 @@
           :default-openeds="defaultOpeneds"
           router
         >
-          <el-submenu index="1">
+          <!-- <el-submenu index="1">
             <template slot="title">统计</template>
             <el-menu-item index="1-1">用户分析</el-menu-item>
             <el-menu-item index="1-2">订单分析</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
+          </el-submenu> -->
+          <el-submenu index="">
             <template slot="title">管理</template>
-            <el-menu-item index="2-1">用户管理</el-menu-item>
-            <el-menu-item index="2-2">vip管理</el-menu-item>
-            <el-menu-item index="2-3">文章管理</el-menu-item>
-            <el-menu-item index="2-4">订单管理</el-menu-item>
+            <el-menu-item index="/index/user">用户管理</el-menu-item>
+            <!-- <el-menu-item index="2-2">vip管理</el-menu-item> -->
+            <el-menu-item index="/index/article">文章管理</el-menu-item>
+            <!-- <el-menu-item index="2-4">订单管理</el-menu-item> -->
           </el-submenu>
-          <el-submenu index="3">
+          <!-- <el-submenu index="3">
             <template slot="title">设置</template>
             <el-menu-item index="3-1">平台信息</el-menu-item>
             <el-menu-item index="3-2">账户权限</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
       <el-main class="main">
