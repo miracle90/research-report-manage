@@ -1,12 +1,12 @@
 <template>
   <div class="page">
     <h1 class="page-title">用户管理</h1>
-    <el-form :model="searchInfo" ref="ruleForm" class="form-wrapper" :inline="true">
-      <el-form-item label="" prop="phone">
-        <el-input v-model="searchInfo.phone" placeholder="输入手机号查找" style="width: 200px;"></el-input>
+    <el-form ref="ruleForm" class="form-wrapper" :inline="true">
+      <el-form-item label="" prop="mobile">
+        <el-input v-model="mobile" placeholder="输入手机号查找" style="width: 200px;"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')" size="medium">搜索</el-button>
+        <el-button type="primary" @click="submitForm" size="medium">搜索</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="userList" border align="center" class="table-wrapper">
@@ -43,9 +43,7 @@ export default {
   data () {
     return {
       userList: [],
-      searchInfo: {
-        phone: ''
-      },
+      mobile: '',
       page: 1,
       total: 0,
       size: 10
@@ -59,9 +57,11 @@ export default {
   },
   methods: {
     getUserList () {
+      const { mobile, page, size } = this
       userList({
-        page: 1,
-        size: 10
+        mobile,
+        page,
+        size
       }).then(res => {
         const { code, data } = res.data
         if (code === 0) {
@@ -73,13 +73,17 @@ export default {
       })
     },
     submitForm () {
-      //
+      this.page = 1
+      this.getUserList()
     },
-    handleSizeChange () {
-      //
+    handleSizeChange (size) {
+      this.page = 1
+      this.size = size
+      this.getUserList()
     },
-    handleCurrentChange () {
-      //
+    handleCurrentChange (page) {
+      this.page = page
+      this.getUserList()
     }
   }
 }

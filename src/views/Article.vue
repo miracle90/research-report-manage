@@ -1,15 +1,12 @@
 <template>
   <div class="page">
     <h1 class="page-title">文章管理</h1>
-    <el-form :model="searchInfo" ref="ruleForm" class="form-wrapper" :inline="true">
+    <el-form ref="ruleForm" class="form-wrapper" :inline="true">
       <el-form-item label="" prop="name">
-        <el-input v-model="searchInfo.name" placeholder="请输入公司名称" style="width: 200px;"></el-input>
-      </el-form-item>
-      <el-form-item label="" prop="phone">
-        <el-input v-model="searchInfo.phone" placeholder="输入手机号查找" style="width: 200px;"></el-input>
+        <el-input v-model="name" placeholder="请输入公司名称" style="width: 200px;"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')" size="medium">搜索</el-button>
+        <el-button type="primary" @click="submitForm" size="medium">搜索</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="userList" border align="center" class="table-wrapper">
@@ -23,12 +20,13 @@
       <!-- <el-table-column align="center" prop="title" label="所属行业"></el-table-column> -->
       <el-table-column align="center" prop="author" label="作者"></el-table-column>
       <el-table-column align="center" prop="institution" label="作者机构"></el-table-column>
-      <el-table-column align="center" prop="title" label="状态"></el-table-column>
+      <!-- <el-table-column align="center" prop="title" label="状态"></el-table-column> -->
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">删除</el-button>
-          <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">修改</el-button>
-          <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">预览</el-button>
+          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">删除</el-button> -->
+          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">修改</el-button> -->
+          <a :href="scope.row.url" target="__blank" class="preview">预览</a>
+          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">预览</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -51,43 +49,46 @@ export default {
   data () {
     return {
       userList: [],
-      searchInfo: {
-        name: ''
-      },
+      name: '',
       page: 1,
       total: 0,
       size: 10
     }
   },
   created () {
-
+    //
   },
   mounted () {
     this.getReportList()
   },
   methods: {
     getReportList () {
+      const { name, page, size } = this
       reportList({
-        page: 1,
-        size: 10
+        name,
+        page,
+        size
       }).then(res => {
         const { code, data } = res.data
         if (code === 0) {
           const { records, total } = data
-          console.log(records)
           this.userList = records
           this.total = total
         }
       })
     },
     submitForm () {
-      //
+      this.page = 1
+      this.getReportList()
     },
-    handleSizeChange () {
-      //
+    handleSizeChange (size) {
+      this.page = 1
+      this.size = size
+      this.getReportList()
     },
-    handleCurrentChange () {
-      //
+    handleCurrentChange (page) {
+      this.page = page
+      this.getReportList()
     }
   }
 }
@@ -107,6 +108,9 @@ export default {
       // text-align left
     .form-wrapper
       margin-top 20px
+    .table-wrapper
+      .preview
+        color #409EFF
     .pagination-wrapper
       margin-top 20px
       text-align center
