@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://www.yoohan.top'
+const baseUrl = 'https://www.yoohan.top'
 
 // 用户列表
 export function userList (data) {
