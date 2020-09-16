@@ -26,7 +26,8 @@ import {
   TimePicker,
   DatePicker,
   Col,
-  Upload
+  Upload,
+  Message
 } from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
@@ -59,6 +60,7 @@ Vue.use(DatePicker)
 Vue.use(Col)
 Vue.use(Upload)
 Vue.prototype.$notify = Notification
+Vue.prototype.$message = Message;
 
 Vue.config.productionTip = false
 

@@ -15,10 +15,9 @@
           </el-submenu> -->
           <el-submenu index="">
             <template slot="title">管理</template>
+            <el-menu-item index="/index/article">研报管理</el-menu-item>
+            <el-menu-item index="/index/upload">研报上传</el-menu-item>
             <el-menu-item index="/index/user">用户管理</el-menu-item>
-            <!-- <el-menu-item index="2-2">vip管理</el-menu-item> -->
-            <el-menu-item index="/index/article">文章管理</el-menu-item>
-            <!-- <el-menu-item index="2-4">订单管理</el-menu-item> -->
           </el-submenu>
           <!-- <el-submenu index="3">
             <template slot="title">设置</template>

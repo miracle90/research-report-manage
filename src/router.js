@@ -5,6 +5,7 @@ import Index from './views/Index.vue'
 import Welcome from './views/Welcome.vue'
 import User from './views/User.vue'
 import Article from './views/Article.vue'
+import Upload from './views/Upload.vue'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
           path: 'article',
           name: 'article',
           component: Article
+        },
+        {
+          path: 'upload',
+          name: 'upload',
+          component: Upload
         }
       ]
     }

@@ -1,15 +1,21 @@
 <template>
   <div class="page">
-    <h1 class="page-title">文章管理</h1>
+    <h1 class="page-title">研报管理</h1>
     <el-form ref="ruleForm" class="form-wrapper" :inline="true">
       <el-form-item label="" prop="name">
-        <el-input v-model="name" placeholder="请输入公司名称" style="width: 200px;"></el-input>
+        <el-input v-model="name" placeholder="请输入公司名称"  size="medium" style="width: 200px;"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm" size="medium">搜索</el-button>
+        <el-button type="primary" @click="upload" size="medium">上传</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="userList" border align="center" class="table-wrapper">
+      <el-table-column align="center" label="精选研报">
+         <template slot-scope="scope">
+          <i class="el-icon-star-off" v-if="scope.row.type === 2"></i>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="id" label="编号"></el-table-column>
       <el-table-column align="center" prop="title" label="文章标题"></el-table-column>
       <el-table-column align="center" prop="code" label="股票代码"></el-table-column>
@@ -23,10 +29,9 @@
       <!-- <el-table-column align="center" prop="title" label="状态"></el-table-column> -->
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">删除</el-button> -->
-          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">修改</el-button> -->
+          <el-button @click="featured(scope.row.id, 2)" type="text" v-if="scope.row.type === 1">加入精选</el-button>
+          <el-button @click="featured(scope.row.id, 1)" type="text" v-else style="color: red;">移除精选</el-button>
           <a :href="scope.row.url" target="__blank" class="preview">预览</a>
-          <!-- <el-button @click="deleteItem(scope.row.id)" type="text" size="small" style="color: red;">预览</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -44,7 +49,7 @@
 </template>
 
 <script>
-import { reportList } from '../common/api.js'
+import { reportList, addReport } from '../common/api.js'
 export default {
   data () {
     return {
@@ -62,6 +67,25 @@ export default {
     this.getReportList()
   },
   methods: {
+    upload () {
+      this.$router.push('/index/upload')
+    },
+    // 加入精选研报
+    featured (id, type) {
+      addReport({
+        type,
+        id
+      }).then(res => {
+        const { code } = res.data
+        if (code === 0) {
+          this.$message({
+            message: '操作成功！',
+            type: 'success'
+          });
+          this.getReportList()
+        }
+      })
+    },
     getReportList () {
       const { name, page, size } = this
       reportList({
@@ -110,7 +134,9 @@ export default {
       margin-top 20px
     .table-wrapper
       .preview
+        margin-left 10px
         color #409EFF
+        font-weight 500
     .pagination-wrapper
       margin-top 20px
       text-align center
