@@ -35,17 +35,41 @@
       <el-form-item label="格式" prop="format">
         <el-input v-model="form.format" placeholder="默认PDF" disabled></el-input>
       </el-form-item>
-      <el-form-item label="研报地址" prop="format">
+      <el-form-item label="文件" prop="file">
+        <el-upload
+          ref="fileUpload"
+          class="upload-demo"
+          drag
+          action="https://www.yoohan.top/main/report/uploadReportFile"
+          :headers="headers"
+          :multiple="false"
+          :file-list="fileLists"
+          :on-change="handleChange"
+          :on-remove="beforeRemove"
+          :auto-upload="false"
+          :on-success="handleSuc"
+          :on-error="handleError"
+          :on-exceed="handleExceed"
+          :before-upload="beforeAvatarUpload"
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">只能上传PDF文件</div>
+        </el-upload>
+      </el-form-item>
+      
+      <!-- <el-form-item label="研报地址" prop="format">
         <el-upload
           class="report-uploader"
           action="#"
           ref="upload"
+          :auto-upload="false"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
           <i class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">立即上传</el-button>
         <el-button @click="resetForm('form')">重置</el-button>
@@ -55,11 +79,16 @@
 </template>
 
 <script>
-// import { userList } from '../common/api.js'
+// import { uploadReportFile } from '../common/api.js'
 
 export default {
   data () {
     return {
+      file: null,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      fileLists: [],
       form: {
         title: '',
         code: '',
@@ -117,27 +146,106 @@ export default {
   mounted () {
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      console.log(res)
-      console.log(file)
-      this.imageUrl = URL.createObjectURL(file.raw);
+    // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+    handleChange(files, fileList) {
+      console.log('handleChange')
+      console.log(files)
+      console.log(fileList)
+      const { raw: { type }, status } = files
+      if (type !== 'application/pdf') {
+        this.$message.error('研报文件只能是 PDF 格式!')
+        this.$refs.fileUpload.clearFiles()
+        this.file = null
+        return
+      }
+      if (status === 'ready') {
+         //获取最后一次得到的文件
+        const aa = fileList[fileList.length - 1]
+        //覆盖上一次的文件
+        this.fileLists = []
+        this.fileLists.push(aa)
+        this.file = aa.raw
+      }
     },
+    // 文件超出个数限制时的钩子
+    handleExceed() {
+      console.log('handleExceed')
+      this.$notify.warning({
+        title: '提示',
+        message: '上传文件已存在,替换请先移除！',
+        duration: 2000
+      })
+    },
+    beforeRemove() {
+      console.log('beforeRemove')
+      //清空已上传的文件列表（该方法不支持在 before-upload 中调用）
+      this.$refs.fileUpload.clearFiles()
+      this.fileLists = []
+    },
+     //文件上传成功时的钩子
+    handleSuc(response) {
+      console.log('handleSuc')
+      console.log(response)
+      //上传成功处理
+      if (response.code === 0) {
+        this.$notify({
+          title: '成功',
+          message: '上传成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.beforeClose()
+        //上传完成以后，调用父组件的方法进行刷新页面操作
+        this.$emit('refresh-table', '')
+      } else {
+        //上传失败处理
+        this.$notify.error({
+          title: '失败',
+          message: response.msg,
+          duration: 3000
+        })
+      }
+    },
+    handleError(err) {
+      console.log('handleError')
+      //上传失败处理
+      this.$notify.error({
+        title: '失败',
+        message: err,
+        duration: 3000
+      })
+    },
+    // handleAvatarSuccess(res, file) {
+    //   console.log(res)
+    //   console.log(file)
+    //   this.imageUrl = URL.createObjectURL(file.raw);
+    // },
     beforeAvatarUpload(file) {
+      console.log('beforeAvatarUpload')
       console.log(file)
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+      const isPDF = file.type === 'application/pdf'
+      if (!isPDF) {
+        this.$message.error('上传头像图片只能是 PDF 格式!')
+        return false
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+      return true
     },
     submitForm(formName) {
       console.log(formName)
-      this.$refs.upload.submit()
+      const { file } = this
+      if (!file) {
+        this.$message.error('请上传研报PDF文件!')
+        return
+      }
+      this.$refs.fileUpload.submit()
+      // 创建form对象
+      // const formdata = new FormData()
+      // formdata.append('file', this.file)
+ 
+      // uploadReportFile(formdata).then(res => {
+      //   console.log(res)
+      // })
+      // this.$refs.fileUpload.submit()
       // this.$refs[formName].validate(valid => {
       //   if (valid) {
       //     // alert('submit!');
