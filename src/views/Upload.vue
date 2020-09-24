@@ -79,7 +79,7 @@
 </template>
 
 <script>
-// import { uploadReportFile } from '../common/api.js'
+import { uploadReportFile, addReport } from '../common/api.js'
 
 export default {
   data () {
@@ -148,9 +148,6 @@ export default {
   methods: {
     // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
     handleChange(files, fileList) {
-      console.log('handleChange')
-      console.log(files)
-      console.log(fileList)
       const { raw: { type }, status } = files
       if (type !== 'application/pdf') {
         this.$message.error('研报文件只能是 PDF 格式!')
@@ -169,7 +166,6 @@ export default {
     },
     // 文件超出个数限制时的钩子
     handleExceed() {
-      console.log('handleExceed')
       this.$notify.warning({
         title: '提示',
         message: '上传文件已存在,替换请先移除！',
@@ -177,15 +173,12 @@ export default {
       })
     },
     beforeRemove() {
-      console.log('beforeRemove')
       //清空已上传的文件列表（该方法不支持在 before-upload 中调用）
       this.$refs.fileUpload.clearFiles()
       this.fileLists = []
     },
      //文件上传成功时的钩子
     handleSuc(response) {
-      console.log('handleSuc')
-      console.log(response)
       //上传成功处理
       if (response.code === 0) {
         this.$notify({
@@ -207,7 +200,6 @@ export default {
       }
     },
     handleError(err) {
-      console.log('handleError')
       //上传失败处理
       this.$notify.error({
         title: '失败',
@@ -215,14 +207,7 @@ export default {
         duration: 3000
       })
     },
-    // handleAvatarSuccess(res, file) {
-    //   console.log(res)
-    //   console.log(file)
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    // },
     beforeAvatarUpload(file) {
-      console.log('beforeAvatarUpload')
-      console.log(file)
       const isPDF = file.type === 'application/pdf'
       if (!isPDF) {
         this.$message.error('上传头像图片只能是 PDF 格式!')
@@ -231,31 +216,58 @@ export default {
       return true
     },
     submitForm(formName) {
-      console.log(formName)
       const { file } = this
       if (!file) {
         this.$message.error('请上传研报PDF文件!')
         return
       }
-      this.$refs.fileUpload.submit()
-      // 创建form对象
-      // const formdata = new FormData()
-      // formdata.append('file', this.file)
- 
-      // uploadReportFile(formdata).then(res => {
-      //   console.log(res)
-      // })
       // this.$refs.fileUpload.submit()
-      // this.$refs[formName].validate(valid => {
-      //   if (valid) {
-      //     // alert('submit!');
-      //     // 先上传文件
-      //     this.$refs.upload.submit()
-      //   } else {
-      //     console.log('error submit!!');
-      //     return false;
-      //   }
-      // });
+
+      // this.$refs.fileUpload.submit()
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          const loading = this.$loading({
+            lock: true,
+            text: '上传中~',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
+          // 创建form对象
+          const formdata = new FormData()
+          formdata.append('file', this.file)
+          uploadReportFile(formdata).then(res => {
+            const { code, url } = res.data
+            if (code === 0) {
+              this.form.url = url
+              // 上传pdf到cdn成功，调用新增接口
+              addReport({
+                type: 1,
+                ...this.form
+              }).then(res => {
+                loading.close();
+                const { code } = res.data
+                if (code === 0) {
+                  this.$notify({
+                    title: '成功',
+                    message: '新增成功',
+                    type: 'success',
+                    duration: 2000
+                  })
+                  setTimeout(() => {
+                    this.$router.push('/index/article')
+                  }, 2000)
+                }
+              })
+            }
+          })
+          // alert('submit!');
+          // 先上传文件
+          // this.$refs.upload.submit()
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
