@@ -27,6 +27,7 @@ import {
   DatePicker,
   Col,
   Upload,
+  Loading,
   Message
 } from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -60,7 +61,8 @@ Vue.use(DatePicker)
 Vue.use(Col)
 Vue.use(Upload)
 Vue.prototype.$notify = Notification
-Vue.prototype.$message = Message;
+Vue.prototype.$message = Message
+Vue.prototype.$loading = Loading.service
 
 Vue.config.productionTip = false
 
