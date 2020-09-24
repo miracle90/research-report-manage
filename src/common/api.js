@@ -25,3 +25,11 @@ export function uploadReportFile (data) {
   const url = baseUrl + '/main/report/uploadReportFile'
   return axios.post(url, data)
 }
+
+// 删除研报
+export function deleteReport (data) {
+  const url = baseUrl + '/main/report/delete'
+  return axios.get(url, {
+    params: data
+  })
+}

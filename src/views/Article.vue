@@ -32,6 +32,7 @@
           <el-button @click="featured(scope.row.id, 2)" type="text" v-if="scope.row.type === 1">加入精选</el-button>
           <el-button @click="featured(scope.row.id, 1)" type="text" v-else style="color: red;">移除精选</el-button>
           <a :href="scope.row.url" target="__blank" class="preview">预览</a>
+          <el-button @click="remove(scope.row.id)" type="text" style="color: red;">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-import { reportList, addReport } from '../common/api.js'
+import { reportList, addReport, deleteReport } from '../common/api.js'
 export default {
   data () {
     return {
@@ -67,6 +68,26 @@ export default {
     this.getReportList()
   },
   methods: {
+    remove (id) {
+      this.$confirm('此操作将永久删除该研报, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteReport({
+          id
+        }).then(res => {
+          const { code } = res.data
+          if (code === 0) {
+            this.$message({
+              message: '删除研报成功！',
+              type: 'success'
+            });
+            this.getReportList()
+          }
+        })
+      })
+    },
     upload () {
       this.$router.push('/index/upload')
     },

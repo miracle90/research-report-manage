@@ -28,7 +28,8 @@ import {
   Col,
   Upload,
   Loading,
-  Message
+  Message,
+  MessageBox
 } from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
@@ -62,6 +63,7 @@ Vue.use(Col)
 Vue.use(Upload)
 Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$loading = Loading.service
 
 Vue.config.productionTip = false
