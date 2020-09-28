@@ -6,6 +6,7 @@ import Welcome from './views/Welcome.vue'
 import User from './views/User.vue'
 import Article from './views/Article.vue'
 import Upload from './views/Upload.vue'
+import Keyword from './views/Keyword.vue'
 
 Vue.use(Router)
 
@@ -39,6 +40,11 @@ export default new Router({
           path: 'upload',
           name: 'upload',
           component: Upload
+        },
+        {
+          path: 'keyword',
+          name: 'keyword',
+          component: Keyword
         }
       ]
     }

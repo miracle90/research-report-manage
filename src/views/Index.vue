@@ -17,6 +17,7 @@
             <template slot="title">管理</template>
             <el-menu-item index="/index/article">研报管理</el-menu-item>
             <el-menu-item index="/index/upload">研报上传</el-menu-item>
+            <el-menu-item index="/index/keyword">关键词管理</el-menu-item>
             <el-menu-item index="/index/user">用户管理</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="3">
@@ -43,7 +44,7 @@ export default {
       return this.$route.path.replace('/', '')
     },
     defaultOpeneds () {
-      return ['1']
+      return ['index/article']
     }
   },
   mounted () {

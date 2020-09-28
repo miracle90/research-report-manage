@@ -33,3 +33,25 @@ export function deleteReport (data) {
     params: data
   })
 }
+
+// 查询关键词
+export function getKeyword (data) {
+  const url = baseUrl + '/main/keyword/get'
+  return axios.get(url, {
+    params: data
+  })
+}
+
+// 删除关键词
+export function removeKeyword (data) {
+  const url = baseUrl + '/main/keyword/delete'
+  return axios.get(url, {
+    params: data
+  })
+}
+
+// 新增or更新关键词
+export function saveKeyword (data) {
+  const url = baseUrl + '/main/keyword/save'
+  return axios.post(url, data)
+}
