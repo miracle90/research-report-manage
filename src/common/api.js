@@ -55,3 +55,9 @@ export function saveKeyword (data) {
   const url = baseUrl + '/main/keyword/save'
   return axios.post(url, data)
 }
+
+// 查询精选研报
+export function selectionReportLis (data) {
+  const url = baseUrl + '/main/report/selectionReportList'
+  return axios.post(url, data)
+}

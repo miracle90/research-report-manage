@@ -4,6 +4,7 @@
     <el-container class="container">
       <el-aside width="200px" class="aside">
         <el-menu
+          active-text-color="#409EFF"
           :default-active="defaultActive"
           :default-openeds="defaultOpeneds"
           router
@@ -13,11 +14,12 @@
             <el-menu-item index="1-1">用户分析</el-menu-item>
             <el-menu-item index="1-2">订单分析</el-menu-item>
           </el-submenu> -->
-          <el-submenu index="">
+          <el-submenu index="/index">
             <template slot="title">管理</template>
+            <el-menu-item index="/index/featured">精选研报</el-menu-item>
             <el-menu-item index="/index/article">研报管理</el-menu-item>
             <el-menu-item index="/index/upload">研报上传</el-menu-item>
-            <el-menu-item index="/index/keyword">关键词管理</el-menu-item>
+            <el-menu-item index="/index/keyword">热榜关键词</el-menu-item>
             <el-menu-item index="/index/user">用户管理</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="3">
@@ -41,10 +43,11 @@ export default {
   },
   computed: {
     defaultActive () {
-      return this.$route.path.replace('/', '')
+      // console.log(this.$route.path.replace('/', ''))
+      return this.$route.path
     },
     defaultOpeneds () {
-      return ['index/article']
+      return ['/index/featured']
     }
   },
   mounted () {

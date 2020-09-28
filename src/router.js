@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Index from './views/Index.vue'
-import Welcome from './views/Welcome.vue'
+// Welcomeimport Welcome from './views/Welcome.vue'
 import User from './views/User.vue'
 import Article from './views/Article.vue'
 import Upload from './views/Upload.vue'
 import Keyword from './views/Keyword.vue'
+import Featured from './views/Featured.vue'
 
 Vue.use(Router)
 
@@ -20,12 +21,18 @@ export default new Router({
     {
       path: '/index',
       component: Index,
+      redirect: '/index/featured',
       children: [
         {
-          path: '',
-          name: 'welcome',
-          component: Welcome
+          path: '/index/featured',
+          name: 'featured',
+          component: Featured
         },
+        // {
+        //   path: '',
+        //   name: 'welcome',
+        //   component: Welcome
+        // },
         {
           path: 'user',
           name: 'user',
