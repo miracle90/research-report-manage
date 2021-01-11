@@ -61,3 +61,24 @@ export function selectionReportLis (data) {
   const url = baseUrl + '/main/report/selectionReportList'
   return axios.post(url, data)
 }
+
+// 查询机构风向标列表
+export function getArticleList (data) {
+  const url = baseUrl + '/main/article/getList'
+  return axios.get(url, {
+    params: data
+  })
+}
+
+// 保存机构风向标文章
+export function saveArticle (data) {
+  const url = baseUrl + '/main/article/save'
+  return axios.post(url, data)
+}
+// 删除机构风向标文章
+export function deleteArticle (data) {
+  const url = baseUrl + '/main/article/delete'
+  return axios.get(url, {
+    params: data
+  })
+}

@@ -20,6 +20,7 @@
             <el-menu-item index="/index/article">研报管理</el-menu-item>
             <el-menu-item index="/index/upload">研报上传</el-menu-item>
             <el-menu-item index="/index/keyword">热榜关键词</el-menu-item>
+            <el-menu-item index="/index/organization">机构风向标</el-menu-item>
             <el-menu-item index="/index/user">用户管理</el-menu-item>
           </el-submenu>
           <!-- <el-submenu index="3">

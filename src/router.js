@@ -8,6 +8,7 @@ import Article from './views/Article.vue'
 import Upload from './views/Upload.vue'
 import Keyword from './views/Keyword.vue'
 import Featured from './views/Featured.vue'
+import Organization from './views/Organization.vue'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
           path: 'upload',
           name: 'upload',
           component: Upload
+        },
+        {
+          path: 'organization',
+          name: 'organization',
+          component: Organization
         },
         {
           path: 'keyword',
